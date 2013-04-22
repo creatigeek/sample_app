@@ -47,6 +47,7 @@ describe User do
       end      
     end
   end
+  
   describe "when email format is valid" do
     it "should be valid" do
       addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
@@ -55,5 +56,15 @@ describe User do
         @user.should be_valid
       end      
     end
+  end
+
+  describe "when email address is already taken" do
+    before do
+      user_with_same_email = @user.dup
+      user_with_same_email.email = @user.email.upcase
+      user_with_same_email.save
+    end
+
+    it { should_not be_valid }
   end
 end
